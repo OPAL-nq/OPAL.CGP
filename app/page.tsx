@@ -5,11 +5,11 @@ import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import ProblemSection from "@/components/ProblemSection";
 import PositioningSection from "@/components/PositioningSection";
-import BeforeAfter from "@/components/BeforeAfter";
+import BeforeAfterSlider from "@/components/BeforeAfterSlider";
 import DiagnosticSection from "@/components/DiagnosticSection";
 import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
-import QuizModal from "@/components/quiz/QuizModal";
+import DiagnosticModal from "@/components/diagnostic/DiagnosticModal";
 import { trackEvent } from "@/lib/analytics";
 
 export default function Home() {
@@ -32,29 +32,29 @@ export default function Home() {
       {/* 01. Sticky Header */}
       <Header onOpenDiagnostic={handleOpenDiagnostic} />
 
-      {/* 02. Hero Section with Capacity Visualizer */}
+      {/* 02. Section 1 — Hero with Graphic Tension & Operating Engine Visualizer */}
       <Hero onOpenDiagnostic={handleOpenDiagnostic} />
 
-      {/* 03. Problem Section with Escalation Timeline */}
-      <ProblemSection />
+      {/* 03. Section 2 — Problem Section with 5->300+ Clients Escalation */}
+      <ProblemSection onOpenDiagnostic={handleOpenDiagnostic} />
 
-      {/* 04. Positioning & 4 Pillars OPAL */}
+      {/* 04. Section 3 — What OPAL Does (4 Pillars) */}
       <PositioningSection />
 
-      {/* 05. Before / After Transformation Matrix */}
-      <BeforeAfter />
+      {/* 05. Section 3 (cont.) — Interactive Before / After Matrix */}
+      <BeforeAfterSlider />
 
-      {/* 06. Diagnostic Section */}
+      {/* 06. Section 4 — Diagnostic High-Conversion Section */}
       <DiagnosticSection onOpenDiagnostic={handleOpenDiagnostic} />
 
-      {/* 07. Final CTA */}
+      {/* 07. Final Conversion Callout */}
       <FinalCTA onOpenDiagnostic={handleOpenDiagnostic} />
 
-      {/* 08. Sober Institutional Footer */}
+      {/* 08. Institutional Footer */}
       <Footer />
 
-      {/* Diagnostic Interactive Fullscreen Modal */}
-      <QuizModal isOpen={diagnosticOpen} onClose={handleCloseDiagnostic} />
+      {/* Fullscreen / Large Interactive Diagnostic Modal */}
+      <DiagnosticModal isOpen={diagnosticOpen} onClose={handleCloseDiagnostic} />
     </main>
   );
 }

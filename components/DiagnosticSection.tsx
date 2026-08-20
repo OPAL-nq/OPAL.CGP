@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, CheckCircle2, Clock, BarChart3, ShieldCheck, Sparkles } from "lucide-react";
+import { ArrowRight, BarChart3, Clock, ShieldCheck, Sparkles, CheckCircle2 } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
 
 interface DiagnosticSectionProps {
@@ -9,76 +9,90 @@ interface DiagnosticSectionProps {
 
 export default function DiagnosticSection({ onOpenDiagnostic }: DiagnosticSectionProps) {
   const handleStart = () => {
-    trackEvent("hero_cta_click", { source: "diagnostic_section" });
+    trackEvent("diagnostic_section_cta_click");
     onOpenDiagnostic();
   };
 
-  const evaluatedAreas = [
-    { title: "Capacité commerciale", desc: "Absorption des prospects & temps consacré au conseil" },
-    { title: "Organisation", desc: "Centralisation des données & standardisation des processus" },
-    { title: "Efficacité opérationnelle", desc: "Suivi des pièces, relances & visibilité temps réel" },
-    { title: "Capacité de croissance", desc: "Délégation, intégration d'équipe & tenue de charge" },
+  const dimensions = [
+    {
+      title: "Structure",
+      desc: "Standardisation des processus & indépendance vis-à-vis des personnes",
+    },
+    {
+      title: "Efficacité",
+      desc: "Allègement administratif & élimination de la dispersion des outils",
+    },
+    {
+      title: "Capacité",
+      desc: "Aptitude à accueillir 2× plus de clients sans surcharge du dirigeant",
+    },
+    {
+      title: "Visibilité",
+      desc: "Accès instantané aux données clés & pilotage en temps réel",
+    },
   ];
 
   return (
-    <section id="diagnostic" className="py-24 md:py-36 bg-surface-100 border-b border-border relative overflow-hidden">
-      {/* Ambient background glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-opal-redLight/40 blur-3xl pointer-events-none -z-10" />
+    <section id="diagnostic" className="py-24 md:py-36 bg-opal-black text-white relative overflow-hidden">
+      {/* Ambient background glows */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-opal-red/20 blur-3xl pointer-events-none -z-0" />
+      <div className="absolute top-0 right-0 w-[400px] h-[300px] bg-opal-redDark/30 blur-3xl pointer-events-none -z-0" />
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-3xl border border-border p-8 sm:p-12 md:p-16 shadow-premium relative text-center">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="bg-white/5 border border-white/10 rounded-3xl p-8 sm:p-12 md:p-16 shadow-premium backdrop-blur-md text-center">
           {/* Eyebrow */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-opal-redLight border border-opal-redBorder text-xs font-bold uppercase tracking-widest text-opal-red mb-6">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>DIAGNOSTIC OPAL CAPACITY SCORE</span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-opal-red/20 border border-opal-red/40 text-xs font-bold uppercase tracking-widest text-white mb-6">
+            <Sparkles className="w-3.5 h-3.5 text-opal-red" />
+            <span>DIAGNOSTIC DE CAPACITÉ OPÉRATIONNELLE</span>
           </div>
 
           {/* Headline */}
-          <h2 className="font-display font-extrabold text-3xl sm:text-4xl md:text-5xl tracking-tight text-foreground text-balance max-w-3xl mx-auto leading-tight">
-            Votre cabinet est-il réellement capable de doubler sa clientèle ?
+          <h2 className="font-display font-black text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-tight text-white text-balance max-w-3xl mx-auto leading-tight">
+            Votre organisation peut-elle absorber votre prochaine étape de croissance ?
           </h2>
 
-          {/* Subheadline */}
-          <p className="mt-5 text-lg sm:text-xl text-muted max-w-2xl mx-auto leading-relaxed text-balance">
-            Répondez à 12 questions sur votre organisation actuelle et obtenez votre{" "}
-            <strong className="text-foreground font-semibold">
-              OPAL Capacity Score
-            </strong>{" "}
-            avec l&apos;identification de votre principal goulot d&apos;étranglement.
-          </p>
+          {/* Subtitle */}
+          <div className="mt-5 space-y-2 text-base sm:text-lg text-gray-300 max-w-2xl mx-auto leading-relaxed text-balance">
+            <p>
+              Répondez à 12 questions sur votre fonctionnement actuel.
+            </p>
+            <p className="text-gray-400 text-sm sm:text-base">
+              OPAL identifie vos principaux points de friction opérationnels et vous indique où votre organisation risque de ralentir votre croissance.
+            </p>
+          </div>
 
           {/* Feature Badges */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs sm:text-sm font-semibold text-foreground">
-            <div className="flex items-center gap-2 bg-surface-50 px-4 py-2 rounded-xl border border-border">
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs sm:text-sm font-semibold text-white">
+            <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-xl border border-white/10">
               <BarChart3 className="w-4 h-4 text-opal-red" />
               <span>12 questions ciblées</span>
             </div>
-            <div className="flex items-center gap-2 bg-surface-50 px-4 py-2 rounded-xl border border-border">
+            <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-xl border border-white/10">
               <Clock className="w-4 h-4 text-opal-red" />
               <span>3 minutes chrono</span>
             </div>
-            <div className="flex items-center gap-2 bg-surface-50 px-4 py-2 rounded-xl border border-border">
+            <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-xl border border-white/10">
               <ShieldCheck className="w-4 h-4 text-opal-red" />
-              <span>Diagnostic 100% personnalisé</span>
+              <span>100% Confidentiel & Gratuit</span>
             </div>
           </div>
 
-          {/* 4 Evaluated Dimensions preview */}
-          <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-left">
-            {evaluatedAreas.map((area, idx) => (
+          {/* 4 Dimension Previews */}
+          <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-left">
+            {dimensions.map((dim, idx) => (
               <div
                 key={idx}
-                className="p-4 rounded-xl bg-surface-50 border border-border/70 flex flex-col justify-between"
+                className="p-4 rounded-2xl bg-white/5 border border-white/10 flex flex-col justify-between"
               >
                 <div>
                   <span className="text-[10px] font-bold uppercase tracking-wider text-opal-red">
                     Dimension 0{idx + 1}
                   </span>
-                  <h4 className="font-display font-bold text-sm text-foreground mt-1">
-                    {area.title}
+                  <h4 className="font-display font-bold text-sm text-white mt-1">
+                    {dim.title}
                   </h4>
-                  <p className="text-xs text-muted mt-1 leading-relaxed">
-                    {area.desc}
+                  <p className="text-xs text-gray-400 mt-1 leading-relaxed">
+                    {dim.desc}
                   </p>
                 </div>
               </div>
@@ -86,17 +100,23 @@ export default function DiagnosticSection({ onOpenDiagnostic }: DiagnosticSectio
           </div>
 
           {/* Primary CTA */}
-          <div className="mt-12">
+          <div className="mt-12 space-y-4">
             <button
               onClick={handleStart}
-              className="inline-flex items-center justify-center gap-3 bg-opal-red hover:bg-opal-redDark text-white px-9 py-4.5 rounded-xl text-base sm:text-lg font-bold tracking-tight shadow-card hover:shadow-glow transition-all duration-200 active:scale-[0.98] group focus-ring"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-opal-red hover:bg-opal-redDark text-white px-10 py-5 rounded-2xl text-base sm:text-xl font-display font-extrabold tracking-tight shadow-glow transition-all duration-200 active:scale-[0.98] group focus-ring"
             >
-              <span>FAIRE MON DIAGNOSTIC</span>
+              <span>Faire mon diagnostic</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
-            <p className="mt-3 text-xs text-muted">
-              Résultat immédiat · Aucun engagement
-            </p>
+
+            <div className="space-y-1 pt-1">
+              <p className="text-xs text-gray-400 font-medium">
+                3 minutes · Gratuit · Sans engagement
+              </p>
+              <p className="text-[11px] text-gray-400 max-w-md mx-auto">
+                À la fin, vous pourrez également réserver un échange de 30 minutes avec Maxym pour analyser votre situation en détail.
+              </p>
+            </div>
           </div>
         </div>
       </div>

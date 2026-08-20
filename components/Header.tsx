@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ArrowRight, Menu, X, ShieldCheck } from "lucide-react";
+import { ArrowRight, Menu, X } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
 
 interface HeaderProps {
@@ -21,15 +21,14 @@ export default function Header({ onOpenDiagnostic }: HeaderProps) {
   }, []);
 
   const handleCtaClick = () => {
-    trackEvent("hero_cta_click", { source: "header" });
+    trackEvent("header_cta_click");
     onOpenDiagnostic();
     setMobileMenuOpen(false);
   };
 
   const navLinks = [
-    { label: "Solution", href: "#solution" },
-    { label: "Le problème", href: "#probleme" },
-    { label: "Les 4 Piliers", href: "#piliers" },
+    { label: "Pourquoi OPAL", href: "#probleme" },
+    { label: "Comment ça fonctionne", href: "#comment-ca-marche" },
     { label: "Avant / Après", href: "#avant-apres" },
     { label: "Diagnostic", href: "#diagnostic" },
   ];
@@ -38,8 +37,8 @@ export default function Header({ onOpenDiagnostic }: HeaderProps) {
     <header
       className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
         isScrolled
-          ? "glass-header py-3.5 shadow-subtle"
-          : "bg-white/80 backdrop-blur-md py-5 border-b border-border/40"
+          ? "bg-white/85 backdrop-blur-md py-3.5 shadow-subtle border-b border-border/80"
+          : "bg-white/60 backdrop-blur-sm py-5 border-b border-border/40"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -48,18 +47,17 @@ export default function Header({ onOpenDiagnostic }: HeaderProps) {
           <a
             href="#"
             className="flex items-center gap-2.5 group focus-ring rounded-lg p-1"
-            aria-label="OPAL.CGP Accueil"
+            aria-label="OPAL Accueil"
           >
-            <div className="w-8 h-8 rounded-lg bg-opal-black flex items-center justify-center text-white font-display font-bold text-sm tracking-wider border border-black/10 group-hover:scale-105 transition-transform">
+            <div className="w-8 h-8 rounded-xl bg-opal-black flex items-center justify-center text-white font-display font-black text-sm tracking-wider shadow-sm group-hover:scale-105 transition-transform">
               O
             </div>
-            <div className="flex items-baseline">
-              <span className="font-display font-bold text-xl tracking-tight text-foreground">
+            <div className="flex flex-col">
+              <span className="font-display font-black text-xl tracking-tight text-foreground leading-none">
                 OPAL
               </span>
-              <span className="text-opal-red font-bold text-xl">.</span>
-              <span className="font-display font-semibold text-xs tracking-widest uppercase text-muted ml-0.5 bg-surface-100 px-1.5 py-0.5 rounded border border-border/60">
-                CGP
+              <span className="text-[9px] uppercase tracking-widest font-bold text-muted mt-0.5 hidden sm:block">
+                Operating Systems
               </span>
             </div>
           </a>
@@ -84,9 +82,9 @@ export default function Header({ onOpenDiagnostic }: HeaderProps) {
           <div className="hidden md:flex items-center gap-4">
             <button
               onClick={handleCtaClick}
-              className="inline-flex items-center gap-2 bg-opal-red hover:bg-opal-redDark text-white px-5 py-2.5 rounded-lg text-sm font-semibold tracking-tight transition-all duration-200 shadow-sm hover:shadow-glow active:scale-[0.98] focus-ring"
+              className="inline-flex items-center gap-2 bg-opal-red hover:bg-opal-redDark text-white px-5 py-2.5 rounded-xl text-sm font-bold tracking-tight transition-all duration-200 shadow-sm hover:shadow-glow active:scale-[0.98] focus-ring"
             >
-              <span>Évaluer mon cabinet</span>
+              <span>Faire mon diagnostic</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
@@ -95,14 +93,14 @@ export default function Header({ onOpenDiagnostic }: HeaderProps) {
           <div className="flex md:hidden items-center gap-2">
             <button
               onClick={handleCtaClick}
-              className="bg-opal-red text-white text-xs font-semibold px-3 py-2 rounded-md flex items-center gap-1"
+              className="bg-opal-red text-white text-xs font-bold px-3.5 py-2 rounded-xl flex items-center gap-1 shadow-sm"
             >
-              <span>Évaluer</span>
+              <span>Diagnostic</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-lg text-foreground hover:bg-surface-100 transition-colors focus-ring"
+              className="p-2 rounded-xl text-foreground hover:bg-surface-100 transition-colors focus-ring"
               aria-label={mobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
             >
               {mobileMenuOpen ? (
@@ -117,14 +115,14 @@ export default function Header({ onOpenDiagnostic }: HeaderProps) {
 
       {/* Mobile Menu Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden glass-header border-b border-border px-4 pt-4 pb-6 mt-3 space-y-4 animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="md:hidden bg-white/95 backdrop-blur-md border-b border-border px-4 pt-4 pb-6 mt-3 space-y-4 animate-in fade-in slide-in-from-top-2 duration-200">
           <div className="flex flex-col space-y-3">
             {navLinks.map((link) => (
               <a
                 key={link.label}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-base font-medium text-foreground hover:text-opal-red py-2 px-3 rounded-md hover:bg-surface-100 transition-colors"
+                className="text-base font-medium text-foreground hover:text-opal-red py-2 px-3 rounded-xl hover:bg-surface-100 transition-colors"
               >
                 {link.label}
               </a>
@@ -133,9 +131,9 @@ export default function Header({ onOpenDiagnostic }: HeaderProps) {
           <div className="pt-3 border-t border-border">
             <button
               onClick={handleCtaClick}
-              className="w-full flex items-center justify-center gap-2 bg-opal-red hover:bg-opal-redDark text-white py-3 px-4 rounded-lg text-base font-semibold shadow-sm"
+              className="w-full flex items-center justify-center gap-2 bg-opal-red hover:bg-opal-redDark text-white py-3.5 px-4 rounded-xl text-base font-bold shadow-sm"
             >
-              <span>Évaluer mon cabinet</span>
+              <span>Faire mon diagnostic</span>
               <ArrowRight className="w-4 h-4" />
             </button>
             <p className="text-center text-xs text-muted mt-2">

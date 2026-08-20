@@ -16,32 +16,33 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "OPAL.CGP — L'OS Opérationnel des Cabinets de Gestion de Patrimoine",
+  title: "OPAL — Operating Systems for Business | Logiciels Métiers sur Mesure",
   description:
-    "Votre cabinet peut-il prendre 2× plus de clients sans vous donner 2× plus de travail ? OPAL.CGP centralise, structure et simplifie votre organisation pour augmenter votre capacité sans surcharge.",
+    "Votre entreprise peut-elle prendre 2× plus de clients sans vous donner 2× plus de travail ? OPAL conçoit des logiciels métiers sur mesure pour structurer votre fonctionnement opérationnel et augmenter votre capacité sans surcharge.",
   keywords: [
-    "OPAL.CGP",
-    "gestion de patrimoine",
-    "CGP",
-    "operating system cabinet",
+    "OPAL",
+    "Operating Systems for Business",
+    "logiciel métier sur mesure",
+    "infrastructure logicielle",
     "capacité opérationnelle",
-    "organisation cabinet CGP",
-    "diagnostic cabinet",
+    "diagnostic entreprise",
+    "croissance B2B",
+    "processus métier",
   ],
-  authors: [{ name: "OPAL.CGP" }],
-  creator: "OPAL.CGP",
+  authors: [{ name: "OPAL" }],
+  creator: "OPAL",
   openGraph: {
-    title: "OPAL.CGP — Votre cabinet peut-il prendre 2× plus de clients sans 2× plus de travail ?",
+    title: "OPAL — Votre entreprise peut-elle prendre 2× plus de clients sans 2× plus de travail ?",
     description:
-      "Évaluez gratuitement la capacité opérationnelle de votre cabinet de gestion de patrimoine en 3 minutes.",
+      "Évaluez gratuitement la capacité opérationnelle de votre organisation en 3 minutes et identifiez vos points de friction.",
     type: "website",
     locale: "fr_FR",
-    siteName: "OPAL.CGP",
+    siteName: "OPAL",
   },
   twitter: {
     card: "summary_large_image",
-    title: "OPAL.CGP — L'OS des Cabinets de Gestion de Patrimoine",
-    description: "Augmentez la capacité opérationnelle de votre cabinet sans augmenter proportionnellement votre charge.",
+    title: "OPAL — Operating Systems for Business",
+    description: "Augmentez la capacité opérationnelle de votre entreprise sans faire exploser votre charge de travail.",
   },
   icons: {
     icon: [
@@ -64,7 +65,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#FFFFFF",
+  themeColor: "#0B0B0B",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,

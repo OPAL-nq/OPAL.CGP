@@ -1,184 +1,163 @@
 "use client";
 
 import { useState } from "react";
-import { AlertCircle, Layers, FileText, RefreshCw, Database, Users, Check, ArrowRight } from "lucide-react";
+import { AlertCircle, Layers, ArrowRight, CheckCircle2, TrendingUp } from "lucide-react";
+import { trackEvent } from "@/lib/analytics";
 
-export default function ProblemSection() {
-  const [activeStage, setActiveStage] = useState(3); // Default at 100 clients
+interface ProblemSectionProps {
+  onOpenDiagnostic: () => void;
+}
+
+export default function ProblemSection({ onOpenDiagnostic }: ProblemSectionProps) {
+  const [activeStage, setActiveStage] = useState(1); // Default on Croissance
 
   const stages = [
     {
-      count: "10",
-      label: "10 clients",
-      subtitle: "Démarrage maîtrisé",
-      complexity: "Faible",
-      complexityScore: 20,
+      id: 0,
+      range: "5 à 20 clients",
+      title: "Démarrage maîtrisé",
+      subtitle: "Tout est encore simple",
       description:
-        "Tout tient encore dans la tête du dirigeant et sur un tableur. Les dossiers sont simples et le suivi est direct.",
-      tags: ["Mémoire du dirigeant", "Tableur basique", "Relances manuelles légères"],
+        "Quelques outils, quelques fichiers et la mémoire du dirigeant suffisent. Le suivi est direct et l'activité reste fluide.",
+      status: "Charge gérable",
+      statusColor: "text-emerald-700 bg-emerald-50 border-emerald-200",
+      frictionLevel: "20%",
     },
     {
-      count: "30",
-      label: "30 clients",
-      subtitle: "Premières dispersions",
-      complexity: "Modérée",
-      complexityScore: 45,
+      id: 1,
+      range: "50 à 100 clients",
+      title: "Montée en charge",
+      subtitle: "Les premières frictions s'installent",
       description:
-        "Les premiers doublons apparaissent. On cherche des pièces dans les emails, des notes sur des blocs ou des dossiers partagés.",
-      tags: ["Pièces dispersées", "Notes éparpillées", "Début des retards de relance"],
+        "L'équipe grandit. Les outils et fichiers se multiplient. Les collaborateurs passent de plus en plus de temps à chercher, vérifier et coordonner.",
+      status: "Frictions quotidiennes",
+      statusColor: "text-amber-700 bg-amber-50 border-amber-200",
+      frictionLevel: "65%",
     },
     {
-      count: "50",
-      label: "50 clients",
-      subtitle: "Frictions quotidiennes",
-      complexity: "Forte",
-      complexityScore: 68,
+      id: 2,
+      range: "200+ clients",
+      title: "Saturation opérationnelle",
+      subtitle: "Le dirigeant devient le point de passage",
       description:
-        "L'équipe s'agrandit. Chaque collaborateur adopte sa propre méthode. Le dirigeant doit valider et réexpliquer sans cesse.",
-      tags: ["Processus hétérogènes", "Allers-retours constants", "Charge mentale élevée"],
-    },
-    {
-      count: "100",
-      label: "100 clients",
-      subtitle: "Le dirigeant devient le goulot",
-      complexity: "Critique",
-      complexityScore: 88,
-      description:
-        "Le volume de dossiers et de relances sature les journées. Le dirigeant passe plus de temps en coordination et administratif qu'en conseil à forte valeur ajoutée.",
-      tags: ["Coordination épuisante", "Suivi administratif lourd", "Plafond de capacité atteint"],
-    },
-    {
-      count: "300+",
-      label: "300+ clients",
-      subtitle: "Saturation opérationnelle",
-      complexity: "Rupture",
-      complexityScore: 100,
-      description:
-        "Sans système opérationnel dédié, chaque nouvelle opportunité crée de la tension, des délais allongés et un risque pour la qualité de service.",
-      tags: ["Rupture de charge", "Risque d'oubli critique", "Dépendance vitale au dirigeant"],
+        "Sans infrastructure logicielle adaptée, chaque nouveau client alourdit la charge. Le dirigeant passe ses journées à débloquer des situations au lieu de conseiller.",
+      status: "Saturation critique",
+      statusColor: "text-red-700 bg-red-50 border-red-200",
+      frictionLevel: "95%",
     },
   ];
+
+  const handleCta = () => {
+    trackEvent("problem_section_cta_click");
+    onOpenDiagnostic();
+  };
 
   return (
     <section id="probleme" className="py-20 md:py-32 bg-surface-100 border-y border-border relative">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="max-w-3xl mx-auto text-center space-y-4">
-          <span className="text-xs font-bold uppercase tracking-widest text-opal-red bg-opal-redLight px-3 py-1 rounded-full border border-opal-redBorder">
-            Le constat opérationnel
+          <span className="text-xs font-bold uppercase tracking-widest text-opal-red bg-opal-redLight px-3.5 py-1.5 rounded-full border border-opal-redBorder">
+            Le Constat Opérationnel
           </span>
           <h2 className="font-display font-extrabold text-3xl sm:text-4xl md:text-5xl tracking-tight text-foreground text-balance">
-            Le problème n&apos;est pas de trouver davantage de clients.
+            Plus votre entreprise grandit, plus son fonctionnement devient complexe.
           </h2>
-          <p className="text-lg sm:text-xl text-muted leading-relaxed text-balance">
-            Le problème commence lorsque chaque nouveau client{" "}
-            <span className="text-foreground font-semibold underline decoration-opal-red/40 decoration-2">
-              augmente également la complexité du cabinet.
-            </span>
+          <p className="text-base sm:text-lg text-muted leading-relaxed text-balance">
+            Le problème n&apos;est pas de trouver des clients. Le problème est que chaque nouveau client{" "}
+            <strong className="text-foreground font-semibold">
+              augmente également la charge opérationnelle de l&apos;entreprise.
+            </strong>
           </p>
         </div>
 
-        {/* Timeline Progression Controls */}
-        <div className="mt-14 max-w-4xl mx-auto">
-          <div className="text-center mb-6">
-            <span className="text-xs font-semibold uppercase tracking-wider text-muted">
-              Sélectionnez une étape de volume pour visualiser l&apos;escalade :
-            </span>
-          </div>
+        {/* 3 Clear Visual Steps */}
+        <div className="mt-14 max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+          {stages.map((stage) => {
+            const isActive = activeStage === stage.id;
 
-          <div className="grid grid-cols-5 gap-2 sm:gap-3 p-1.5 bg-white rounded-2xl border border-border shadow-subtle">
-            {stages.map((stage, idx) => (
+            return (
               <button
-                key={stage.count}
-                onClick={() => setActiveStage(idx)}
-                className={`py-3 px-2 sm:px-4 rounded-xl text-center transition-all duration-200 focus-ring ${
-                  activeStage === idx
-                    ? "bg-opal-black text-white shadow-md scale-[1.02]"
-                    : "hover:bg-surface-50 text-foreground"
+                key={stage.id}
+                onClick={() => {
+                  setActiveStage(stage.id);
+                  trackEvent("problem_stage_clicked", { stage: stage.range });
+                }}
+                className={`p-6 sm:p-7 rounded-3xl text-left border transition-all duration-200 flex flex-col justify-between relative overflow-hidden focus-ring ${
+                  isActive
+                    ? "bg-white border-opal-red shadow-premium scale-[1.02] ring-1 ring-opal-red/30"
+                    : "bg-surface-50 border-border hover:bg-white hover:border-border shadow-subtle"
                 }`}
               >
-                <div className="text-sm sm:text-base font-display font-bold">
-                  {stage.count}
-                </div>
-                <div
-                  className={`text-[10px] sm:text-xs font-medium truncate ${
-                    activeStage === idx ? "text-gray-300" : "text-muted"
-                  }`}
-                >
-                  clients
-                </div>
-              </button>
-            ))}
-          </div>
+                <div>
+                  <div className="flex items-center justify-between pb-4 border-b border-border/80">
+                    <span className="font-display font-bold text-xs uppercase tracking-wider text-muted">
+                      {stage.range}
+                    </span>
+                    <span
+                      className={`text-[10px] font-bold px-2.5 py-1 rounded-full border ${stage.statusColor}`}
+                    >
+                      {stage.status}
+                    </span>
+                  </div>
 
-          {/* Active Stage Card */}
-          <div className="mt-6 bg-white rounded-2xl border border-border p-6 sm:p-8 shadow-card relative overflow-hidden">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-border/80">
-              <div>
-                <div className="flex items-center gap-3">
-                  <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-surface-100 text-foreground border border-border">
-                    Palier {stages[activeStage].label}
-                  </span>
-                  <span className="text-xs font-semibold text-opal-red">
-                    Friction : {stages[activeStage].complexity}
-                  </span>
-                </div>
-                <h3 className="font-display font-bold text-xl sm:text-2xl text-foreground mt-2">
-                  {stages[activeStage].subtitle}
-                </h3>
-              </div>
+                  <h3 className="font-display font-bold text-lg sm:text-xl text-foreground mt-4">
+                    {stage.subtitle}
+                  </h3>
 
-              {/* Progress gauge for complexity */}
-              <div className="sm:text-right">
-                <div className="text-xs text-muted font-medium">Index de charge</div>
-                <div className="flex items-center gap-2 mt-1">
-                  <div className="w-28 sm:w-36 h-2.5 bg-surface-100 rounded-full overflow-hidden border border-border/60">
+                  <p className="text-xs sm:text-sm text-muted mt-2 leading-relaxed">
+                    {stage.description}
+                  </p>
+                </div>
+
+                {/* Friction Indicator Bar */}
+                <div className="mt-6 pt-4 border-t border-border/60">
+                  <div className="flex items-center justify-between text-[11px] font-bold text-muted mb-1.5">
+                    <span>Index de friction</span>
+                    <span className="text-foreground">{stage.frictionLevel}</span>
+                  </div>
+                  <div className="w-full h-2 bg-surface-200 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-opal-red transition-all duration-500 rounded-full"
-                      style={{ width: `${stages[activeStage].complexityScore}%` }}
+                      className={`h-full rounded-full transition-all duration-500 ${
+                        stage.id === 0
+                          ? "bg-emerald-600"
+                          : stage.id === 1
+                          ? "bg-amber-500"
+                          : "bg-opal-red shadow-glow"
+                      }`}
+                      style={{ width: stage.frictionLevel }}
                     />
                   </div>
-                  <span className="font-display font-bold text-xs text-foreground">
-                    {stages[activeStage].complexityScore}%
-                  </span>
                 </div>
-              </div>
-            </div>
-
-            <p className="mt-6 text-base sm:text-lg text-muted leading-relaxed">
-              {stages[activeStage].description}
-            </p>
-
-            {/* Friction Tags */}
-            <div className="mt-6 flex flex-wrap gap-2 pt-4 border-t border-border/60">
-              {stages[activeStage].tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-surface-50 border border-border text-foreground"
-                >
-                  <AlertCircle className="w-3.5 h-3.5 text-opal-red" />
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </div>
+              </button>
+            );
+          })}
         </div>
 
         {/* The Core Editorial Escalation Statement */}
-        <div className="mt-14 max-w-3xl mx-auto text-center">
-          <div className="p-8 sm:p-10 rounded-3xl bg-white border border-opal-red/20 shadow-premium relative">
-            <div className="w-12 h-12 rounded-2xl bg-opal-redLight flex items-center justify-center mx-auto mb-5 text-opal-red">
+        <div className="mt-12 max-w-3xl mx-auto text-center">
+          <div className="p-8 sm:p-12 rounded-3xl bg-white border-2 border-opal-red/20 shadow-premium relative">
+            <div className="w-12 h-12 rounded-2xl bg-opal-redLight flex items-center justify-center mx-auto mb-5 text-opal-red shadow-inner">
               <Layers className="w-6 h-6" />
             </div>
-            <blockquote className="font-display font-bold text-xl sm:text-2xl md:text-3xl text-foreground tracking-tight leading-snug">
-              &ldquo;À partir d&apos;un certain volume, le dirigeant finit par devenir{" "}
-              <span className="text-opal-red underline decoration-opal-red/30">
-                le système qui fait tenir le cabinet.
-              </span>&rdquo;
-            </blockquote>
-            <p className="mt-4 text-sm sm:text-base text-muted font-normal">
-              Chaque nouveau client devient alors une nouvelle source de charge, au détriment du conseil et de la sérénité.
+
+            <h3 className="font-display font-black text-2xl sm:text-3xl md:text-4xl text-foreground tracking-tight leading-snug text-balance">
+              À un certain stade, le dirigeant devient lui-même le système.
+            </h3>
+
+            <p className="mt-4 text-sm sm:text-base text-muted leading-relaxed max-w-xl mx-auto text-balance">
+              Les informations sont dispersées, les processus dépendent des personnes, et chaque nouveau client ajoute une couche supplémentaire.
             </p>
+
+            <div className="mt-6 pt-6 border-t border-border/80 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <button
+                onClick={handleCta}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 bg-opal-red hover:bg-opal-redDark text-white px-7 py-4 rounded-xl font-display font-bold text-sm sm:text-base shadow-sm hover:shadow-glow transition-all active:scale-[0.98] focus-ring"
+              >
+                <span>Voir où se situe mon principal frein</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
