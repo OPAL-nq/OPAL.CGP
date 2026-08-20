@@ -43,7 +43,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // If Supabase is configured, insert lead in database
+    let savedToSupabase = false;
+
+    // 1. If Supabase is configured, insert lead in database
     if (supabase) {
       const { data, error } = await supabase.from("opal_leads").insert([
         {
@@ -52,14 +54,14 @@ export async function POST(req: NextRequest) {
           email: leadEmail,
           phone: leadPhone,
           company: leadCompany,
-          firm_name: leadCompany, // backwards compatibility
+          firm_name: leadCompany,
           sector: leadSector,
           sector_other: leadSectorOther,
           global_score: finalGlobalScore || null,
-          structure_score: scores?.structure ?? result?.dimensions?.organization ?? null,
-          efficiency_score: scores?.efficiency ?? result?.dimensions?.operationalEfficiency ?? null,
-          capacity_score: scores?.capacity ?? result?.dimensions?.commercialCapacity ?? null,
-          visibility_score: scores?.visibility ?? result?.dimensions?.growthCapacity ?? null,
+          structure_score: scores?.structure ?? result?.dimensions?.structure ?? null,
+          efficiency_score: scores?.efficiency ?? result?.dimensions?.efficiency ?? null,
+          capacity_score: scores?.capacity ?? result?.dimensions?.capacity ?? null,
+          visibility_score: scores?.visibility ?? result?.dimensions?.visibility ?? null,
           profile_key: profile?.key || result?.profile?.key || null,
           profile_label: profile?.label || result?.profile?.label || null,
           bottleneck: bottleneck || result?.primaryBottleneck?.dimension || null,
@@ -70,26 +72,49 @@ export async function POST(req: NextRequest) {
         },
       ]);
 
-      if (error) {
+      if (!error) {
+        savedToSupabase = true;
+      } else {
         console.error("[Supabase Error inserting lead]:", error);
-        return NextResponse.json(
-          { success: true, savedToSupabase: false, message: error.message },
-          { status: 200 }
-        );
       }
-
-      return NextResponse.json({
-        success: true,
-        savedToSupabase: true,
-        data,
-      });
     }
 
-    // Supabase credentials not set yet -> return success (client keeps localStorage backup)
+    // 2. Optional Webhook notification (Slack, Discord, Zapier, Make, Telegram)
+    const webhookUrl = process.env.LEADS_WEBHOOK_URL;
+    if (webhookUrl) {
+      try {
+        await fetch(webhookUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            content: `🎯 **Nouveau Lead OPAL Diagnostic !**\n**Nom :** ${leadFirstName} ${leadLastName}\n**Email :** ${leadEmail}\n**Entreprise :** ${leadCompany}\n**Téléphone :** ${leadPhone || "Non renseigné"}\n**Secteur :** ${leadSector} ${leadSectorOther ? `(${leadSectorOther})` : ""}\n**Score :** ${finalGlobalScore}/100 (${profile?.label || ""})\n**Bottleneck :** ${bottleneck || ""}\n**Frein principal :** ${freeTextAnswer || "N/A"}`,
+            lead: {
+              firstName: leadFirstName,
+              lastName: leadLastName,
+              email: leadEmail,
+              phone: leadPhone,
+              company: leadCompany,
+              sector: leadSector,
+              sectorOther: leadSectorOther,
+              globalScore: finalGlobalScore,
+              profile: profile?.label,
+              bottleneck,
+              freeTextAnswer,
+              createdAt: finalCreatedAt,
+            },
+          }),
+        });
+      } catch (webhookErr) {
+        console.warn("[Webhook Notification Error]:", webhookErr);
+      }
+    }
+
     return NextResponse.json({
       success: true,
-      savedToSupabase: false,
-      note: "Supabase credentials not set. Lead saved locally.",
+      savedToSupabase,
+      note: savedToSupabase
+        ? "Lead enregistré dans Supabase."
+        : "Supabase non configuré. Lead sauvegardé localement.",
     });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Erreur interne";
